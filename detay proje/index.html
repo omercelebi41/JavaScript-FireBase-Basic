@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h2>Kişisel Bilgiler</h2>
+        </div>
+        <form id="form" class="form">
+
+            <div>
+                <label for="Foto">Fotoğraf Ekle:</label><br>
+                <input type="file">
+            </div>
+<br>
+            <div >
+                <label for="Ad">Ad:</label><br>
+                <input type="text"  pattern="[A-Za-z]*"  placeholder="Ad" id="Ad"  />
+     
+            </div>
+<br>
+            <div >
+                <label for="Soyad">Soyad:</label><br>
+                <input type="text" pattern="[A-Za-z]*" placeholder="Soyad" id="Soyad" />
+        
+            </div>
+<br>
+            <div >
+                <label for="E-posta">E-posta:</label><br>
+                <input type="email" placeholder="@gmail.com" id="Email"/>
+   
+            </div>
+<br>
+            <div>
+                <label for="Tel">Telefon numarası:</label><br>
+                <input type="number" placeholder="Telefon numarası " id="Tel"/>             
+            </div>
+            <br>
+        
+    </div>
+
+    
+
+Adres:
+<br>
+<textarea id="Adres" name="Adres" onkeyup="checkChar()" onkeydown="checkChar()" rows="4" cols="40"></textarea>
+<div id="report"></div>
+<br>
+
+    <div>
+        <label for="Şehir">Şehir/İlçe:</label><br>
+        <input type="text" placeholder="Şehir/İlçe " id="Şehir"/>             
+     </div>
+     <br>
+
+     <div>
+        <label for="Posta Kodu">Posta Kodu:</label><br>
+        <input type="text" placeholder="Posta Kodu " id="Posta"/>             
+    </div>
+
+    </form>
+
+
+
+
+
+    <br>
+    
+    <input type="button" name="button" id="button" value="Ek Bilgiler +">
+
+    <br>
+
+    <form id="form2" class="form2" style="display: none;"> <br>
+
+    <div>
+        <label for="Doğum Tarihi">Doğum Tarihi:</label><br>
+        <input type="date" id="Doğumtarihi" >
+    </div>
+
+    <br>
+    <div>
+        <label for="Ehliyet">Sürücü Ehliyeti:</label><br>
+        <input type="text" id="Ehliyet">
+    </div>
+
+    <br>
+    <div>
+        Cinsiyet: <br>
+        <select name="Cinsiyet" id="Cinsiyet">
+            <option value="Erkek">Erkek</option>
+            <option value="Kadın">Kadın</option>
+        </select>
+
+    </div>
+    <br>
+
+    <div>
+        <label for="Medeni">Medeni Durum:</label><br>
+        <input type="text" id="Medeni">
+    </div>
+    <br>
+
+    <div>
+        <label for="Askerlik">Askerlik Durumu:</label><br>
+        <input type="text" id="Askerlik">
+    </div>
+    <br>
+
+    <div>
+        <label for="Linkedin">Linkedin:</label><br>
+        <input type="text" id="Linkedin">
+    </div>
+    <br>
+
+    <div>
+        <label for="İnternet">İnternet Sitesi:</label><br>
+        <input type="text" id="İnternet">
+    </div>
+
+    </form>
+    <br>
+    
+    <input type="button" name="btnkaydet" id="btnkaydet" value="Kaydet" >
+    <br><br>
+    <input type="button" name="bilgi" id="bilgi" value="Bilgileri Görüntüle">
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.13.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyC1VAfNXWmAHYeg3QECpbQgTZhZmy4qlEg",
+          authDomain: "detaysoft-89dc4.firebaseapp.com",
+          projectId: "detaysoft-89dc4",
+          storageBucket: "detaysoft-89dc4.appspot.com",
+          messagingSenderId: "87137366371",
+          appId: "1:87137366371:web:a1c14a93329f8d59cfa356"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        import{getDatabase, ref, set, get, child, update, remove}
+        from "https://www.gstatic.com/firebasejs/9.13.0/firebase-database.js";
+
+        const db =getDatabase();
+
+        var ad = document.getElementById('Ad');
+        var soyad = document.getElementById('Soyad');
+        var email = document.getElementById('Email');
+        var tel = document.getElementById('Tel');
+        var adres = document.getElementById('Adres');
+        var şehir = document.getElementById('Şehir');
+        var posta = document.getElementById('Posta');
+       var doğum = document.getElementById('Doğumtarihi ');
+        var ehliyet = document.getElementById('Ehliyet');
+        var cinsiyet = document.getElementById('Cinsiyet');
+        var medeni = document.getElementById('Medeni');
+        var askerlik = document.getElementById('Askerlik');
+        var linkedin = document.getElementById('Linkedin');
+        var internet = document.getElementById('İnternet');
+
+        var kaydetbtn = document.getElementById("btnkaydet");
+        var bilgibtn = document.getElementById("bilgi")
+
+        function kaydetdata(){//data baseye kayıt.
+            set(ref(db, "user/" + ad.value),{
+                ad: ad.value,
+                soyad: soyad.value,
+               email: email.value,
+                tel: tel.value,
+                adres: adres.value,
+                şehir: şehir.value,
+                posta: posta.value,
+               /* doğum: doğum.value,
+                ehliyet: ehliyet.value,
+                cinsiyet: cinsiyet.value,
+                medeni: medeni.value,
+                askerlik: askerlik.value,
+                linkedin: linkedin.value,
+                internet: internet.value */
+            })
+            .then(()=>{
+                alert("Kayıt Başarılı!");
+            })
+            .catch((error)=>{
+                alert("Kayıt Başarısız!, error"+ error)
+            })
+        }
+
+        //girilen ada göre databasede ki bilgileri getircek.
+        function bilgilerigetir(){
+            const dbref= ref(db);
+
+            get(child(dbref,"user/" + ad.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    ad.value = snapshot.val().ad;
+                    soyad.value = snapshot.val().soyad;
+                    email.value = snapshot.val().email;
+                    tel.value = snapshot.val().tel;
+                    adres.value = snapshot.val().adres;
+                    şehir.value = snapshot.val().şehir;
+                    posta.value = snapshot.val().posta;
+                }
+                else{
+                    alert("Data bulunamadı!");
+                }
+            })
+            
+        }
+        bilgibtn.addEventListener('click' , bilgilerigetir);
+        kaydetbtn.addEventListener('click', kaydetdata);
+      </script>
+    
+    
+   
+    <script src="script.js"></script>
+    
+    
+    
+</body>
+
+
+</html>
